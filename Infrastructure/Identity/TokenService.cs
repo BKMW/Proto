@@ -45,7 +45,7 @@ namespace Infrastructure.Identity
         #endregion
 
         #region GenerateTokenAsync
-        public async Task<ApiResponse>GenerateTokenAsync(User user, string role)
+        public async Task<ApiResponse>GenerateTokenAsync(ClaimsCurrentUser claimsCurrentUser)
         {
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
@@ -56,9 +56,9 @@ namespace Infrastructure.Identity
             {
                 Subject = new ClaimsIdentity(new[]
                {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                        new Claim(ClaimTypes.NameIdentifier, user.Id),
-                        new Claim(ClaimTypes.Role, role),
+                        new Claim(ClaimTypes.Name, claimsCurrentUser.UserName),
+                        new Claim(ClaimTypes.NameIdentifier, claimsCurrentUser.UserId),
+                        new Claim(ClaimTypes.Role, claimsCurrentUser.Role),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                      //   new Claim("LoggedOn", DateTime.Now.ToString()),
                 }),
@@ -72,14 +72,14 @@ namespace Infrastructure.Identity
 
             var refreshToken = new RefreshToken()
             {
-                JwtId = token.Id,
-                UserId = user.Id,
+                JwtId = token.Id,//JwtRegisteredClaimNames.Jti
+                UserId = claimsCurrentUser.UserId,
                 AddedDate = DateTime.UtcNow,
                 ExpiryDate = tokenDescriptor.Expires,
                 Token = GenerateRefreshToken()
             };
 
-            var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.UserId == user.Id && x.ExpiryDate> DateTime.UtcNow);
+            var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.UserId == claimsCurrentUser.UserId && x.ExpiryDate> DateTime.UtcNow);
             
 
             await _context.RefreshTokens.AddAsync(refreshToken);

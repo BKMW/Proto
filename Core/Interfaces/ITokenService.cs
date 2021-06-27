@@ -6,7 +6,7 @@ namespace Core.Interfaces
 {
     public interface ITokenService
     {
-        Task<ApiResponse> GenerateTokenAsync(User user, string role);
+        Task<ApiResponse> GenerateTokenAsync(ClaimsCurrentUser claimsCurrentUser);
         Task<ApiResponse> RefreshTokenAsync(string refreshToken, ClaimsCurrentUser claimsCurrentUser);
     }
 }

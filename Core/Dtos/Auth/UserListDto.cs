@@ -31,12 +31,10 @@ namespace Core.Dtos.Auth
         public bool IsFirstConnection { get; set; }
         public DateTime? LastConnection { get; set; }
         public DateTime? ResetPassword { get; set; }
-        public DateTime? DateCreation { get; set; }
+        public DateTime? AddedDate { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string MSISDN { get; set; }
-        public string Organization { get; set; }
-        public string CodeBank { get; set; }
+        public string Company { get; set; }
 
     }
     public class UserListInfoResponse

@@ -88,7 +88,12 @@ namespace API.Controllers
                     await _userManager.UpdateAsync(user);
 
                     var roles = await _userManager.GetRolesAsync(user);
-                    var token = await _tokenService.GenerateTokenAsync(user, roles.FirstOrDefault());
+                    var claimsCurrentUser = new ClaimsCurrentUser {
+                        UserId = user.Id, 
+                        UserName = user.UserName, 
+                        Role = roles.FirstOrDefault() 
+                    };
+                    var token = await _tokenService.GenerateTokenAsync(claimsCurrentUser);
 
 
                     return new ApiResponse<LoginResponse>
