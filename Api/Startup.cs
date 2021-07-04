@@ -1,10 +1,11 @@
-using Core.Constants;
 using Core.Dtos;
+using Core.Filters;
 using Core.Interfaces;
 using Core.Models.Identity;
 using Core.Services;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -12,12 +13,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace API
 {
@@ -34,8 +33,12 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
 
+            #region Custom Authorization
+            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
+            #endregion
 
             #region Use DB
 
@@ -80,28 +83,7 @@ namespace API
                 options.Lockout.AllowedForNewUsers = true;
             }).AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
 
-            var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
-            var tokenValidationParams = new TokenValidationParameters
-            {
-                //ValidateIssuerSigningKey = true,
-                //IssuerSigningKey = new SymmetricSecurityKey(key),
-                //ValidateIssuer = false,
-                //ValidateAudience = false,
-                //ValidateLifetime = true,
-                //RequireExpirationTime = false,
-                //ClockSkew = TimeSpan.Zero
-
-                ValidateIssuerSigningKey = true,
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ValidateLifetime = true,
-                // ValidIssuer = AuthorizationConstants.Site,
-                // ValidAudience = AuthorizationConstants.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(key)
-            };
-
-            services.AddSingleton(tokenValidationParams);
-
+          
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -112,7 +94,7 @@ namespace API
           {
              // x.RequireHttpsMetadata = false;
               x.SaveToken = true;
-              x.TokenValidationParameters = tokenValidationParams;
+              x.TokenValidationParameters = Config.tokenValidationParams;
           });
 
             // 6- add cros
@@ -174,6 +156,14 @@ namespace API
             });
             #endregion
 
+            // failed test zeor time
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.Zero;
+            });
+
+            services.AddControllers();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -183,12 +173,11 @@ namespace API
             // migrate any database changes on startup (includes initial db creation)
             //Log.Information("Starting Migration");
 
-            identityDbContext.Database.Migrate();
+            //identityDbContext.Database.Migrate();
 
             //Log.Information("Migration Success");
             #endregion
 
-            app.UseAuthentication();
 
             #region Swagger
             // Enable middleware to serve generated Swagger as a JSON endpoint.
@@ -218,6 +207,8 @@ namespace API
 
             app.UseRouting();
             app.UseCors("AllowSpecificOrigin");
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

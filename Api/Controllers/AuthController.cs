@@ -67,13 +67,13 @@ namespace API.Controllers
 
         [HttpPost]
         [Route("Login")]
+        [AllowAnonymous]
         //POST : /api/Account/Login
         public async Task<ApiResponse> Login([FromBody] LoginRequest dto)
         {
 
             try
             {
-
                 User user = await _userManager.FindByNameAsync(dto.UserName);
                 if (user != null && await _userManager.CheckPasswordAsync(user, dto.Password))
                 {
@@ -352,10 +352,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return new ApiResponse
-                {
-                    resultCode = Result.EXCEPTION
-                };
+                return new ApiResponse { resultCode = Result.EXCEPTION };
             }
         }
         #endregion

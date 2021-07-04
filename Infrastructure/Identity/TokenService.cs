@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
@@ -23,8 +22,8 @@ namespace Infrastructure.Identity
         private readonly AppSettings _appSettings;
         private readonly IdentityDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        private readonly TokenValidationParameters _tokenValidationParams;
 
 
 
@@ -32,37 +31,50 @@ namespace Infrastructure.Identity
                 IOptions<AppSettings> appSettings,
                 IdentityDbContext context,
                 UserManager<User> userManager,
-                TokenValidationParameters tokenValidationParams
+                RoleManager<IdentityRole> roleManager
 
             )
         {
             _appSettings = appSettings?.Value;
             _context = context;
             _userManager = userManager;
-            _tokenValidationParams = tokenValidationParams;
+            _roleManager = roleManager;
 
         }
         #endregion
 
         #region GenerateTokenAsync
-        public async Task<ApiResponse>GenerateTokenAsync(ClaimsCurrentUser claimsCurrentUser)
+        public async Task<ApiResponse> GenerateTokenAsync(ClaimsCurrentUser claimsCurrentUser)
         {
 
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
             SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY));
-           
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new[]
-               {
+            var subject = new ClaimsIdentity(new[]
+                {
                         new Claim(ClaimTypes.Name, claimsCurrentUser.UserName),
                         new Claim(ClaimTypes.NameIdentifier, claimsCurrentUser.UserId),
                         new Claim(ClaimTypes.Role, claimsCurrentUser.Role),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                      //   new Claim("LoggedOn", DateTime.Now.ToString()),
-                }),
-                Expires = DateTime.UtcNow.AddSeconds(_appSettings.ExpireTime), // 5-10 
+                });
+
+            var role = await _roleManager.FindByNameAsync(claimsCurrentUser.Role);
+
+            var roleClaims = _roleManager.GetClaimsAsync(role).Result.Select(c => c.Value).ToList();
+
+            foreach (var permission in roleClaims)
+            {
+                subject.AddClaim(
+                    new Claim("Permission", permission)
+
+                    );
+            }
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = subject,
+                Expires = DateTime.UtcNow.AddMinutes(_appSettings.ExpireTime), // 5-10 
                 SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -79,19 +91,19 @@ namespace Infrastructure.Identity
                 Token = GenerateRefreshToken()
             };
 
-            var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.UserId == claimsCurrentUser.UserId && x.ExpiryDate> DateTime.UtcNow);
-            
+            var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.UserId == claimsCurrentUser.UserId && x.ExpiryDate > DateTime.UtcNow);
+
 
             await _context.RefreshTokens.AddAsync(refreshToken);
-            var res=  await _context.SaveChangesAsync();
+            var res = await _context.SaveChangesAsync();
 
             if (res < 0)
                 return new ApiResponse { resultCode = Result.ERROR };
 
             if (storedToken != null)
-                return new ApiResponse {resultCode= Result.MULTI_AUTH, token = jwtToken, refreshToken= refreshToken.Token };
+                return new ApiResponse { resultCode = Result.MULTI_AUTH, token = jwtToken, refreshToken = refreshToken.Token };
 
-            return new ApiResponse { resultCode = Result.SUCCESS , token = jwtToken, refreshToken = refreshToken.Token };
+            return new ApiResponse { resultCode = Result.SUCCESS, token = jwtToken, refreshToken = refreshToken.Token };
 
         }
         #endregion
@@ -107,12 +119,12 @@ namespace Infrastructure.Identity
                 var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.Token == refreshToken);
 
                 if (storedToken == null)
-                   return new ApiResponse{ resultCode = Result.TOKEN_NOTFOUND };
-                
+                    return new ApiResponse { resultCode = Result.TOKEN_NOTFOUND };
 
-                
+
+
                 if (storedToken.JwtId != claimsCurrentUser.Jti)
-                    return new ApiResponse{ resultCode = Result.TOKEN_NOTMATCH };
+                    return new ApiResponse { resultCode = Result.TOKEN_NOTMATCH };
                 #endregion
 
                 #region refreshToken
@@ -163,8 +175,8 @@ namespace Infrastructure.Identity
             catch (Exception ex)
             {
 
-                return new ApiResponse{ resultCode = Result.EXCEPTION  };
-                
+                return new ApiResponse { resultCode = Result.EXCEPTION };
+
             }
         }
 
@@ -176,7 +188,7 @@ namespace Infrastructure.Identity
         {
             return Operations.RandomString(5);
         }
-       
+
         #endregion
     }
 }
