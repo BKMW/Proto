@@ -85,7 +85,7 @@ namespace Core.Tools
         #endregion
 
         #region GenerateRefreshToken
-        public static string GenerateRefreshToken()
+        public static string GenerateRefreshToken()//x=32
         {
             var randomNumber = new byte[32];
             using var rng = RandomNumberGenerator.Create();

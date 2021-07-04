@@ -42,12 +42,12 @@ namespace API.Controllers
         #region RefreshToken  exemple use VerifyAndGenerateTokenAsync
         [HttpPost]
         [Route("RefreshToken")]
-        [Authorize]
-        public async Task<ApiResponse> RefreshToken([FromBody] TokenRequest tokenRequest)
+        [AllowAnonymous]
+        public async Task<ApiResponse> RefreshToken()
         {
-           
+                Request.Headers.TryGetValue("RefreshToken", out var refreshToken);
                 var claimsUser = User.GetCurrentUser();
-                var token = await _tokenService.RefreshTokenAsync(tokenRequest.refreshToken, claimsUser);
+                var token = await _tokenService.RefreshTokenAsync(refreshToken, claimsUser);
               
                 if (token.resultCode != Result.SUCCESS)
                     return new ApiResponse { resultCode = Result.TOKEN_INVALID};
@@ -58,11 +58,11 @@ namespace API.Controllers
         #endregion
 
         #region Disconnect from all devices
-         
+
 
         #endregion
 
-
+       
         #region login
 
         [HttpPost]

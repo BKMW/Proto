@@ -61,15 +61,10 @@ namespace Infrastructure.Identity
 
             var role = await _roleManager.FindByNameAsync(claimsCurrentUser.Role);
 
-            var roleClaims = _roleManager.GetClaimsAsync(role).Result.Select(c => c.Value).ToList();
-
-            foreach (var permission in roleClaims)
-            {
-                subject.AddClaim(
-                    new Claim("Permission", permission)
-
-                    );
-            }
+            var roleClaims = await _roleManager.GetClaimsAsync(role);
+              
+             subject.AddClaims(roleClaims);
+         
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -88,8 +83,8 @@ namespace Infrastructure.Identity
                 UserId = claimsCurrentUser.UserId,
                 AddedDate = DateTime.UtcNow,
                 ExpiryDate = tokenDescriptor.Expires,
-                Token = GenerateRefreshToken()
-            };
+                Token = Operations.GenerateRefreshToken()
+        };
 
             var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.UserId == claimsCurrentUser.UserId && x.ExpiryDate > DateTime.UtcNow);
 
@@ -159,7 +154,7 @@ namespace Infrastructure.Identity
                 storedToken.JwtId = token.Id;
                 storedToken.AddedDate = DateTime.UtcNow;
                 storedToken.ExpiryDate = tokenDescriptor.Expires;
-                storedToken.Token = GenerateRefreshToken();
+                storedToken.Token = Operations.GenerateRefreshToken();
 
 
                 _context.RefreshTokens.Update(storedToken);
@@ -184,10 +179,7 @@ namespace Infrastructure.Identity
         #endregion
 
         #region Helpers
-        private string GenerateRefreshToken()
-        {
-            return Operations.RandomString(5);
-        }
+      
 
         #endregion
     }
