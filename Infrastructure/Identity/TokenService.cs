@@ -128,20 +128,24 @@ namespace Infrastructure.Identity
                 JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
                 SymmetricSecurityKey key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY));
-
-
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new[]
-                   {
-
+                var subject = new ClaimsIdentity(new[]
+               {
                         new Claim(ClaimTypes.Name,claimsCurrentUser.UserName),
                         new Claim(ClaimTypes.NameIdentifier, claimsCurrentUser.UserId),
                         new Claim(ClaimTypes.Role, claimsCurrentUser.Role),
-                        //new Claim("LoggedOn", DateTime.Now.ToString()),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                     //   new Claim("LoggedOn", DateTime.Now.ToString()),
+                });
 
-                }),
+                var role = await _roleManager.FindByNameAsync(claimsCurrentUser.Role);
+
+                var roleClaims = await _roleManager.GetClaimsAsync(role);
+
+                subject.AddClaims(roleClaims);
+
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = subject,
                     Expires = DateTime.UtcNow.AddSeconds(_appSettings.ExpireTime), // 5-10 
                     SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature)
                 };

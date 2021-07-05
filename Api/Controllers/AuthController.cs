@@ -39,7 +39,7 @@ namespace API.Controllers
         }
         #endregion
 
-        #region RefreshToken  exemple use VerifyAndGenerateTokenAsync
+        #region RefreshToken  exemple use VerifyAndGenerateTokenAsync   
         [HttpPost]
         [Route("RefreshToken")]
         [AllowAnonymous]

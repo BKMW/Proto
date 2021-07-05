@@ -31,7 +31,7 @@ namespace API.Controllers
 
         // POST api/<TestController>
         [HttpPost]
-        [Authorize(Permissions.Products.Create)]
+        [Authorize(Permissions.Roles.Create)]
         public void Post([FromBody] string value)
         {
         }

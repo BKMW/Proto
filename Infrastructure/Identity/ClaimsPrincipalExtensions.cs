@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 
@@ -67,6 +68,18 @@ namespace Infrastructure.Identity
 
         }
 
+        public static List<Claim> GetPermissions(this ClaimsPrincipal principal)
+
+        {
+
+            if (!principal.Identity.IsAuthenticated)
+
+                return null;
+
+          
+            return principal.FindAll("Permission")?.ToList();
+
+        }
         public static ClaimsCurrentUser GetCurrentUser(this ClaimsPrincipal principal)
 
         {
