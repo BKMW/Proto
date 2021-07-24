@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Core.Tools
+namespace Application.Tools
 {
     public class RSACrypt
     {

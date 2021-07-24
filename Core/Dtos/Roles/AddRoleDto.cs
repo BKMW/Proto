@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Dtos.Roles
+namespace Application.Dtos.Roles
 {
     public class AddRoleRequest
     {

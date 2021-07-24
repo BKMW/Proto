@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
 
-namespace Core.Filters
+namespace Application.Filters
 {
     public class PermissionPolicyProvider : IAuthorizationPolicyProvider
     {

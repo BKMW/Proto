@@ -1,7 +1,6 @@
-﻿using Core.Constants;
-using Core.Dtos;
-using Core.Dtos.Roles;
-using Core.Models.Identity;
+﻿using Application.Constants;
+using Application.Dtos;
+using Application.Dtos.Roles;
 using Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

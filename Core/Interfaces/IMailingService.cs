@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Core.Interfaces
+namespace Application.Interfaces
 {
     public interface IMailingService
     {

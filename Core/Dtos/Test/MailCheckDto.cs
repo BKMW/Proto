@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Core.Dtos.Test
+namespace Application.Dtos.Test
 {
     public class MailCheckDto
     {

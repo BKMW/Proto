@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Filters
+namespace Application.Filters
 {
     public class PermissionRequirement : IAuthorizationRequirement
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Core.Dtos.Auth
+namespace Application.Dtos.Auth
 {
     public class UserDetailsResponse
     {

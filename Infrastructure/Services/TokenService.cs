@@ -1,20 +1,20 @@
-﻿using Core.Constants;
-using Core.Dtos;
-using Core.Interfaces;
-using Core.Models.Identity;
-using Core.Tools;
+﻿using Application.Constants;
+using Application.Dtos;
+using Application.Interfaces;
+using Application.Tools;
+using Infrastructure.Identity;
+using Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Identity
+namespace Infrastructure.Services
 {
     public class TokenService : ITokenService
     {
@@ -182,9 +182,6 @@ namespace Infrastructure.Identity
 
         #endregion
 
-        #region Helpers
       
-
-        #endregion
     }
 }

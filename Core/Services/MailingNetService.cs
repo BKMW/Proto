@@ -1,10 +1,10 @@
-﻿using Core.Dtos;
-using Core.Interfaces;
+﻿using Application.Dtos;
+using Application.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace Core.Services
+namespace Application.Services
 {
     public class MailingNetService : IMailingNetService
     {

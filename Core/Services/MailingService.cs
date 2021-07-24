@@ -1,5 +1,5 @@
-﻿using Core.Dtos;
-using Core.Interfaces;
+﻿using Application.Dtos;
+using Application.Interfaces;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Core.Services
+namespace Application.Services
 {
     public class MailingService : IMailingService
     {

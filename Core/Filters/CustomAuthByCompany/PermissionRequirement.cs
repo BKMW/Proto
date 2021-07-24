@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Filters.CustomAuthByCompany
+namespace Application.Filters.CustomAuthByCompany
 {
     public class CompanyRequirement : IAuthorizationRequirement
     {

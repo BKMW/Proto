@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Core.Dtos
+namespace Application.Dtos
 {
     public class AppSettings
     {

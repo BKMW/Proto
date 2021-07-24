@@ -1,15 +1,12 @@
-using Core.Dtos;
-using Core.Filters;
-using Core.Interfaces;
-using Core.Models.Identity;
-using Core.Services;
+using Application;
+using Application.Dtos;
+using Infrastructure;
 using Infrastructure.Identity;
+using Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -34,26 +31,55 @@ namespace API
         {
 
 
-            #region Custom Authorization
-            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
+            services.AddApplication();
+            services.AddInfrastructure(Configuration);
+
+
+
+            #region Config Identity & JWT
+
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
+                //options.Password.RequireDigit = false;
+                //options.Password.RequiredLength = 6;
+                //options.Password.RequireNonAlphanumeric = false;
+                //options.Password.RequireUppercase = false;
+                //options.Password.RequireLowercase = false;
+                options.Password = Config.passwordOptions;
+                options.User.RequireUniqueEmail = true;
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+            }).AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
+
+
+            services.AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                // x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+              .AddJwtBearer(x =>
+              {
+                      // x.RequireHttpsMetadata = false;
+                      x.SaveToken = true;
+                  x.TokenValidationParameters = Config.tokenValidationParams;
+              });
+
+            // 6- add cros
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
+            });
+            // add authorization
+            services.AddAuthorization();
             #endregion
 
-            #region Use DB
-
-            services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
-
-            #endregion
-
-            #region Add services to the container
-
-            // This method gets called by the runtime. Use this method to add services to the container.
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddTransient<IMailingService, MailingService>();
-
-
-            #endregion
 
             #region read appsettings
 
@@ -67,47 +93,6 @@ namespace API
 
             #endregion
 
-            #region Config Identity & JWT
-
-            services.AddIdentity<User, IdentityRole>(options =>
-            {
-                options.Password.RequireDigit = false;
-                options.Password.RequiredLength = 6;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireLowercase = false;
-                options.User.RequireUniqueEmail = true;
-                // Lockout settings.
-                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
-                options.Lockout.MaxFailedAccessAttempts = 5;
-                options.Lockout.AllowedForNewUsers = true;
-            }).AddEntityFrameworkStores<IdentityDbContext>().AddDefaultTokenProviders();
-
-          
-            services.AddAuthentication(x =>
-            {
-                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-               // x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-          .AddJwtBearer(x =>
-          {
-             // x.RequireHttpsMetadata = false;
-              x.SaveToken = true;
-              x.TokenValidationParameters = Config.tokenValidationParams;
-          });
-
-            // 6- add cros
-
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowSpecificOrigin",
-                    builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-
-            });
-            // add authorization
-            services.AddAuthorization();
-            #endregion
 
             #region Swagger
             // Register the Swagger generator, defining 1 or more Swagger documents
@@ -156,7 +141,7 @@ namespace API
             });
             #endregion
 
-            // failed test zeor time
+            // failed test zero time
             services.Configure<SecurityStampValidatorOptions>(options =>
             {
                 options.ValidationInterval = TimeSpan.Zero;

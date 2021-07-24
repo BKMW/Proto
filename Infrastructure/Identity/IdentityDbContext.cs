@@ -1,8 +1,7 @@
-﻿using Core.Models.Identity;
+﻿using Infrastructure.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace Infrastructure.Identity
 {

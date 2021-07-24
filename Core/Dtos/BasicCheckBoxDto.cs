@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Dtos
+namespace Application.Dtos
 {
    public class BasicCheckBoxDto
     {

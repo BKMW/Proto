@@ -1,8 +1,7 @@
-﻿using Core.Dtos;
-using Core.Models.Identity;
+﻿using Application.Dtos;
 using System.Threading.Tasks;
 
-namespace Core.Interfaces
+namespace Application.Interfaces
 {
     public interface ITokenService
     {

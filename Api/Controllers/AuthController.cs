@@ -1,9 +1,10 @@
-﻿using Core.Constants;
-using Core.Dtos;
-using Core.Dtos.Auth;
-using Core.Interfaces;
-using Core.Models.Identity;
+﻿using Application.Constants;
+using Application.Dtos;
+using Application.Dtos.Auth;
+using Application.Interfaces;
 using Infrastructure.Identity;
+using Infrastructure.Identity.Entities;
+using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
