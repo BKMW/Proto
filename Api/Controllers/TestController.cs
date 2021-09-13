@@ -16,6 +16,7 @@ namespace API.Controllers
     {
         // GET: api/<TestController>
         [HttpGet]
+        [AllowAnonymous]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };

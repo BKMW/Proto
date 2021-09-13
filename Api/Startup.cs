@@ -196,6 +196,15 @@ namespace API
             app.UseAuthentication();
             app.UseAuthorization();
 
+          
+            //app.Run(async context =>
+            //          await context.Response.WriteAsync(" Hello world ! ")
+            //    ); ;
+
+
+            // need   app.UseRouting(); 
+            // last middleware endpoints
+            // take delegate request
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
