@@ -15,10 +15,11 @@ namespace Infrastructure
                 #region Use DB
 
                 services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("IdentityConnection")));
+                services.AddDbContext<IdentityDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("testConnection")));
 
-                #endregion
+            #endregion
 
-                services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<ITokenService, TokenService>();
             // second way to get claims
                 services.AddScoped<ICurrentUserService, CurrentUserService>();
 
