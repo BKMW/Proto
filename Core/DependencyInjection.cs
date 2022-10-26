@@ -12,8 +12,8 @@ namespace Application
         {
 
             #region Custom Authorization
-            services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            //services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+            //services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 
 

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using PERMISSIONSFW;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ namespace API
 
             services.AddApplication();
             services.AddInfrastructure(Configuration);
+            services.AddPermissions();
 
 
 

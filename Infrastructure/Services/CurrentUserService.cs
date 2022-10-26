@@ -15,7 +15,6 @@ namespace Infrastructure.Services
         }
 
         public string GetUserId => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-
         public string GetRole => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Role);
         public string GetUserName => _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.Name);
         public string GetJti => _httpContextAccessor.HttpContext?.User?.FindFirstValue(JwtRegisteredClaimNames.Jti);
