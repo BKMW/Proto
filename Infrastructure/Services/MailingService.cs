@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Application.Services
+namespace Infrastructure.Services
 {
     public class MailingService : IMailingService
     {

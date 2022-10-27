@@ -23,7 +23,7 @@ namespace Infrastructure
             // second way to get claims
                 services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-
+            services.AddTransient<IMailingService, MailingService>();
 
 
             return services;

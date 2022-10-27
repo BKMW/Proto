@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using System.Net.Mail;
 using System.Threading.Tasks;
 
-namespace Application.Services
+namespace Infrastructure.Services
 {
     public class MailingNetService : IMailingNetService
     {

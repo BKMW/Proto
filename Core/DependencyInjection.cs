@@ -1,8 +1,4 @@
-﻿using Application.Filters;
-using Application.Interfaces;
-using Application.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace Application
 {
@@ -22,7 +18,7 @@ namespace Application
             #region Add services to the container
 
             // This method gets called by the runtime. Use this method to add services to the container.
-            services.AddTransient<IMailingService, MailingService>();
+           
 
             #endregion
           
