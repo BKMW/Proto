@@ -1,8 +1,7 @@
-﻿using Application.Dtos;
-using Application.Interfaces;
+﻿using Application.Interfaces;
+using MailingFB.Dtos;
 using Microsoft.Extensions.Options;
 using System.Net.Mail;
-using System.Threading.Tasks;
 
 namespace Infrastructure.Services
 {

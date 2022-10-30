@@ -1,4 +1,5 @@
 ﻿using Application.Constants;
+using MailingFB;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,6 +15,32 @@ namespace API.Controllers
     [ApiController]
     public class TestController : ControllerBase
     {
+        private readonly IMailingService mailingService;
+
+        public TestController(IMailingService MailingService)
+        {
+            mailingService = MailingService;
+        }
+
+        [HttpGet("SendMail")]
+        [AllowAnonymous]
+        public async Task  SendMail()
+        {
+            try
+            {
+                await mailingService.SendEmailAsync("Faouzi.Benamor@mssolutions-group.com", "test", "test");
+
+            }
+            catch(Exception ex)
+            {
+
+            }
+            finally
+            {
+
+            }
+        }
+
         // GET: api/<TestController>
         [HttpGet]
         [AllowAnonymous]

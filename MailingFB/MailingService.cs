@@ -1,16 +1,12 @@
-﻿using Application.Dtos;
-using Application.Interfaces;
+﻿using MailingFB.Dtos;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using MimeKit;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 
-namespace Infrastructure.Services
-{
+namespace MailingFB 
+{ 
     public class MailingService : IMailingService
     {
         private readonly MailSettings _mailSettings;
@@ -41,8 +37,11 @@ namespace Infrastructure.Services
             email.From.Add(new MailboxAddress(_mailSettings.DisplayName, _mailSettings.Email));
 
             using var smtp = new SmtpClient();
+            //smtp.Connect(_mailSettings.HOST, _mailSettings.PORT, SecureSocketOptions.StartTls); //normal
             smtp.Connect(_mailSettings.HOST, _mailSettings.PORT, SecureSocketOptions.None);
-            smtp.Authenticate(_mailSettings.Email, _mailSettings.PWD);
+
+
+            // smtp.Authenticate(_mailSettings.Email, _mailSettings.PWD); // if (SecureSocketOptions.StartTls)
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
         }
@@ -60,7 +59,7 @@ namespace Infrastructure.Services
             };
 
             email.To.AddRange(_mailSettings.TO as List<MailboxAddress>);
-            email.Cc.AddRange(_mailSettings.TO as List<MailboxAddress>);
+            email.Cc.AddRange(_mailSettings.CC as List<MailboxAddress>);
 
 
             var builder = new BodyBuilder();
@@ -71,8 +70,11 @@ namespace Infrastructure.Services
             email.From.Add(new MailboxAddress(_mailSettings.DisplayName, _mailSettings.Email));
 
             using var smtp = new SmtpClient();
-            smtp.Connect(_mailSettings.HOST, _mailSettings.PORT, SecureSocketOptions.StartTls);
-            smtp.Authenticate(_mailSettings.Email, _mailSettings.PWD);
+            //smtp.Connect(_mailSettings.HOST, _mailSettings.PORT, SecureSocketOptions.StartTls); //normal
+            smtp.Connect(_mailSettings.HOST, _mailSettings.PORT, SecureSocketOptions.None);
+
+
+            // smtp.Authenticate(_mailSettings.Email, _mailSettings.PWD); // if (SecureSocketOptions.StartTls)
             await smtp.SendAsync(email);
             smtp.Disconnect(true);
         }

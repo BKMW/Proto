@@ -3,6 +3,8 @@ using Application.Dtos;
 using Infrastructure;
 using Infrastructure.Identity;
 using Infrastructure.Identity.Entities;
+using MailingFB;
+using MailingFB.Dtos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,7 +38,7 @@ namespace API
             services.AddApplication();
             services.AddInfrastructure(Configuration);
             services.AddPermissions();
-
+            services.AddMailing(Configuration);
 
 
             #region Config Identity & JWT
@@ -84,7 +86,7 @@ namespace API
 
 
             #region read appsettings
-
+            
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             var appSettingsSection = Configuration.GetSection("AppSettings");

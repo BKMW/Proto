@@ -19,11 +19,10 @@ namespace Infrastructure
 
             #endregion
 
-            services.AddScoped<ITokenService, TokenService>();
+                services.AddScoped<ITokenService, TokenService>();
             // second way to get claims
                 services.AddScoped<ICurrentUserService, CurrentUserService>();
 
-            services.AddTransient<IMailingService, MailingService>();
 
 
             return services;
