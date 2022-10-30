@@ -13,8 +13,8 @@ namespace WorkerServiceWithQuartz
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-                await Task.Delay(5000, stoppingToken);
+                _logger.LogInformation("Worker running at #######: {time}", DateTimeOffset.Now);
+                await Task.Delay(20000, stoppingToken);
             }
         }
     }

@@ -12,8 +12,8 @@ namespace WorkerServiceWithQuartz
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                Console.WriteLine($"My service is running at:{DateTime.Now}");
-                 await Task.Delay(3000, stoppingToken);
+                Console.WriteLine($"My service is running at *****:{DateTime.Now}");
+                 await Task.Delay(15000, stoppingToken);
             }
         }
     }
