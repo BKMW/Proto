@@ -1,7 +1,6 @@
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
-using WorkerServiceWithQuartz;
 using WorkerServiceWithQuartz.JobFactory;
 using WorkerServiceWithQuartz.Jobs;
 using WorkerServiceWithQuartz.Models;

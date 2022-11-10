@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 
 namespace Application.Tools
 {
-    public class Operations
+    public class TextOperations
     {
 
         #region MaskWallet
@@ -21,8 +21,6 @@ namespace Application.Tools
         }
 
         #endregion
-
-       
 
         #region RandomString
         public static string RandomString(int length)

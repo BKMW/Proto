@@ -75,7 +75,7 @@ namespace Infrastructure.Services
                 UserId = user.Id,
                 AddedDate = DateTime.UtcNow,
                 ExpiryDate = tokenDescriptor.Expires,
-                Token = Operations.RandomString(8)
+                Token = TextOperations.RandomString(8)
             };
 
             var storedToken = await _context.RefreshTokens.FirstOrDefaultAsync(x => x.UserId == user.Id && x.ExpiryDate > DateTime.UtcNow);
@@ -255,7 +255,7 @@ namespace Infrastructure.Services
             storedToken.JwtId = token.Id;
             storedToken.AddedDate = DateTime.UtcNow;
             storedToken.ExpiryDate = tokenDescriptor.Expires;
-            storedToken.Token = Operations.RandomString(8);
+            storedToken.Token = TextOperations.RandomString(8);
 
 
             _context.RefreshTokens.Update(storedToken);
