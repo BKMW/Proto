@@ -41,14 +41,22 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogFW", "LogFW\LogFW.csproj", "{AA291754-C9EC-42F7-AE00-A8845657E478}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BackgroundJobs", "BackgroundJobs", "{9A7ED417-50B4-4EC2-B694-B7B1D2B37DE0}"
+	ProjectSection(SolutionItems) = preProject
+		README_Worker.txt = README_Worker.txt
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkerServiceWithQuartz", "WorkerServiceWithQuartz\WorkerServiceWithQuartz.csproj", "{D7BC96A3-2586-4DC0-ADA4-95AC09491CA1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Test", "Application.Test\Application.Test.csproj", "{2A7D2E72-F836-47CF-BCA1-FD436F9E1315}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Test", "API.Test\API.Test.csproj", "{D538917B-3304-4021-977D-DCC780FD111E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API.Test", "API.Test\API.Test.csproj", "{D538917B-3304-4021-977D-DCC780FD111E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API6", "API6\API6.csproj", "{444CA456-937A-44AF-8053-3171D09D2AFD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API6", "API6\API6.csproj", "{444CA456-937A-44AF-8053-3171D09D2AFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Éléments de solution", "Éléments de solution", "{D3011A00-6E7F-494E-886D-F2A4B13DB4C2}"
+	ProjectSection(SolutionItems) = preProject
+		ROADMAP.txt = ROADMAP.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

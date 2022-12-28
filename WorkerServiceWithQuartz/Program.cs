@@ -27,7 +27,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         List<JobMetadata> jobMetadatas = new List<JobMetadata>();
         jobMetadatas.Add(new JobMetadata(Guid.NewGuid(), typeof(NotificationJob), "Notify Job", "0/5 * * * * ?"));
         jobMetadatas.Add(new JobMetadata(Guid.NewGuid(), typeof(LoggerJob), "Log Job", "0/10 * * * * ?"));
-       
+
         services.AddSingleton(jobMetadatas);
         #endregion
 

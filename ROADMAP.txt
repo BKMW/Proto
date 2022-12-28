@@ -1,0 +1,22 @@
+
+- Repoditory Pattern + UnitOffWork                                      10/11/2022               done
+- CQRS + Mediator                                                       30/11/2022               done
+- Design Principles														30/12/2022				 done
+- Unit Test : Xunit, Moq, FluentAssertions								30/11/2022               in progress
+- Auto Mapper															30/12/2022               in progress
+- API + Docker															30/12/2022				 in progress
+- Microservices															30/12/2022				 in progress
+- Libraries: Log, Pagination, Read CSV + Write CSV						30/12/2022				 in progress
+- Auth + Redis															30/12/2022				 in progress
+- Prototype WS															30/12/2022				 in progress
+- Prototype service worker                                              30/12/2022				 in progress
+- Pipline
+- Exception Handler
+- Cokies + JWT
+- Performance Test and quality (Sonar) + Charge Test
+- Clean Architecture in Deep											30/12/2022               in progress
+- Solides Principles in Deep											30/12/2022				 in progress
+- C# Deep : Task, CancelationToken ...									30/12/2022				 in progress
+- Linq Deep																30/12/2022				 in progress
+- EF Core Deep															30/12/2022				 in progress
+
