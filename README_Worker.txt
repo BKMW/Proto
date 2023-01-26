@@ -5,3 +5,12 @@ Install nuget:
  <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 
   Create Jobs
+
+
+
+
+
+
+
+  == Humanizer nuget:
+  used Humanizer.Core for english
